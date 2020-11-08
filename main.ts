@@ -110,7 +110,7 @@ function lista_tronco6 () {
     Coord_monedas(3)
 }
 function Coord_monedas (num: number) {
-    while (index <= num) {
+    for (let index = 0; index <= num; index++) {
         moneda = sprites.create(img`
             . . . b b . . . 
             . . b 5 5 b . . 
@@ -122,7 +122,6 @@ function Coord_monedas (num: number) {
             . . . f f . . . 
             `, SpriteKind.Food)
         moneda.setPosition(col[index], row[index])
-        index += 1
     }
 }
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -703,36 +702,38 @@ function lista_tronco8 () {
     Coord_monedas(3)
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.meta, function (sprite, otherSprite) {
-    otherSprite.destroy()
-    meta2.setImage(img`
-        . . . . . f c c c c f . . . . . 
-        . . c c f b b 3 3 b b f c c . . 
-        . c b 3 3 b b c c b b 3 3 b c . 
-        . f 3 c c c b c c b c c c 3 f . 
-        f c b b c c b c c b c c b b c f 
-        c 3 c c b c c c c c c b c c 3 c 
-        c 3 c c c c c c c c c c c c 3 c 
-        . f b b c c c c c c c c b b f . 
-        . . f b b c 8 9 9 8 c b b f . . 
-        . . c c c f 9 3 1 9 f c c c . . 
-        . c 3 f f f 9 3 3 9 f f f 3 c . 
-        c 3 f f f f 8 9 9 8 f f f f 3 c 
-        f 3 c c f f f f f f f f c c 3 f 
-        f b 3 c b b f b b f b b c 3 b f 
-        . c b b 3 3 b 3 3 b 3 3 b b c . 
-        . . f f f f f f f f f f f f . . 
-        `)
-    music.baDing.play()
-    info.changeScoreBy(1)
-    game.over(true, effects.confetti)
+    if (monedas == 25) {
+        otherSprite.destroy()
+        meta2.setImage(img`
+            . . . . . f c c c c f . . . . . 
+            . . c c f b b 3 3 b b f c c . . 
+            . c b 3 3 b b c c b b 3 3 b c . 
+            . f 3 c c c b c c b c c c 3 f . 
+            f c b b c c b c c b c c b b c f 
+            c 3 c c b c c c c c c b c c 3 c 
+            c 3 c c c c c c c c c c c c 3 c 
+            . f b b c c c c c c c c b b f . 
+            . . f b b c 8 9 9 8 c b b f . . 
+            . . c c c f 9 3 1 9 f c c c . . 
+            . c 3 f f f 9 3 3 9 f f f 3 c . 
+            c 3 f f f f 8 9 9 8 f f f f 3 c 
+            f 3 c c f f f f f f f f c c 3 f 
+            f b 3 c b b f b b f b b c 3 b f 
+            . c b b 3 3 b 3 3 b 3 3 b b c . 
+            . . f f f f f f f f f f f f . . 
+            `)
+        music.baDing.play()
+        info.changeScoreBy(1)
+        game.over(true, effects.confetti)
+    }
 })
 let meta2: Sprite = null
 let picture: Sprite = null
 let moneda: Sprite = null
-let index = 0
 let row: number[] = []
 let col: number[] = []
 let Héroe: Sprite = null
+let monedas = 0
 let ay = 0
 game.splash("Monedas voladoras", "Autor: Claudio Orts")
 game.setDialogTextColor(9)
@@ -766,8 +767,7 @@ game.setDialogFrame(img`
 game.showLongText("Para poder conseguir la perla de la ostra primero deberás recoger todas las monedas.    Ten cuidado de no quemarte o ahogarte. SUERTE!!!", DialogLayout.Full)
 let ax = 400
 ay = 300
-Objetos()
-crea_héroe()
+monedas = 0
 tiles.setTilemap(tiles.createTilemap(hex`2000080000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001010000000004040000000001010100000000000000000104000000000000000202030303030202050505050202020303030303030303020205050505020202`, img`
     . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
     . . . 2 . . 2 . . . . . . 2 . . . . . . . . 2 . . . . . . . . . 
@@ -778,6 +778,8 @@ tiles.setTilemap(tiles.createTilemap(hex`200008000000000000000000000000000000000
     2 2 . . . . 2 2 . . . . 2 2 2 . . . . 2 . . . 2 2 . . 2 . . . . 
     2 2 . . . . 2 2 . . . . 2 2 2 . . . . . . . . 2 2 . . . . 2 2 2 
     `, [myTiles.transparency16,sprites.builtin.forestTiles2,sprites.dungeon.floorLightMoss,sprites.dungeon.hazardWater,sprites.builtin.forestTiles22,sprites.dungeon.hazardLava1], TileScale.Sixteen))
+Objetos()
+crea_héroe()
 troncos()
 color_fondo(randint(0, 15))
 info.setScore(0)
